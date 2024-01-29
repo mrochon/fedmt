@@ -5,5 +5,10 @@
   },
   "REST": {
     "VerifyMembership": "https://mrb2cfunctions.azurewebsites.net/api/IsMemberOfGroup?code=7IDwkGnIkQBlU1trvbBM4W6QqXnr4zoTOG-R4QH5cJG_AzFu8sHTQg=="
+  },
+  "Google": {
+    "domainName": "GOOGLE.com",
+    "displayName": "GOOGLE employees/users",
+    "clientId": "696994352313-cbsromrmj6oa01hmhnntp4l709328goq.apps.googleusercontent.com"
   }
 }

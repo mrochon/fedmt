@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<TrustFrameworkPolicy xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/online/cpim/schemas/2013/06" 
-PolicySchemaVersion="0.3.0.0" TenantId="yourtenant.onmicrosoft.com" PolicyId="B2C_1A_signin" PublicPolicyUri="http://yourtenant.onmicrosoft.com/B2C_1A_signin">
-<!-- DeploymentMode="Development"
+<TrustFrameworkPolicy xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/online/cpim/schemas/2013/06" PolicySchemaVersion="0.3.0.0" TenantId="yourtenant.onmicrosoft.com" PolicyId="B2C_1A_signin" PublicPolicyUri="http://yourtenant.onmicrosoft.com/B2C_1A_signin">
+  <!-- DeploymentMode="Development"
 UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights" 
 > -->
   <BasePolicy>
@@ -19,11 +18,11 @@ UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights"
     <Localization Enabled="true">
       <LocalizedResources Id="api.signuporsignin.en">
         <LocalizedStrings>
-          <LocalizedString ElementType="UxElement" StringId="social_intro">Sign in with your social account 3</LocalizedString>   
-          <LocalizedString ElementType="UxElement" StringId="forgotpassword_link">Forgot your password 3?</LocalizedString>          
-          </LocalizedStrings>
-          </LocalizedResources>
-          </Localization> 
+          <LocalizedString ElementType="UxElement" StringId="social_intro">Sign in with your social account 3</LocalizedString>
+          <LocalizedString ElementType="UxElement" StringId="forgotpassword_link">Forgot your password 3?</LocalizedString>
+        </LocalizedStrings>
+      </LocalizedResources>
+    </Localization>
   </BuildingBlocks>
   <ClaimsProviders>
     <ClaimsProvider>
@@ -38,12 +37,12 @@ UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights"
           </Metadata>
           <InputClaims>
             <InputClaim ClaimTypeReferenceId="idp" />
-            <InputClaim ClaimTypeReferenceId="domain_hint" />            
-          </InputClaims>          
+            <InputClaim ClaimTypeReferenceId="domain_hint" />
+          </InputClaims>
           <ValidationTechnicalProfiles>
             <ValidationTechnicalProfile ReferenceId="login-NonInteractive" />
-            <ValidationTechnicalProfile ReferenceId="REST-VerifyMembership" />            
-          </ValidationTechnicalProfiles>          
+            <ValidationTechnicalProfile ReferenceId="REST-VerifyMembership" />
+          </ValidationTechnicalProfiles>
         </TechnicalProfile>
         <TechnicalProfile Id="ForgotPassword">
           <DisplayName>Forgot your password?</DisplayName>
@@ -70,7 +69,7 @@ UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights"
             <OutputClaim ClaimTypeReferenceId="domain_hint" DefaultValue="{OAUTH-KV:domain}" AlwaysUseDefaultValue="true" />
           </OutputClaims>
           <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
-      </TechnicalProfile>
+        </TechnicalProfile>
       </TechnicalProfiles>
     </ClaimsProvider>
   </ClaimsProviders>
@@ -81,12 +80,13 @@ UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights"
           <ClaimsExchanges>
             <ClaimsExchange Id="HRD" TechnicalProfileReferenceId="CopyHRDParams" />
           </ClaimsExchanges>
-        </OrchestrationStep>        
+        </OrchestrationStep>
         <OrchestrationStep Order="2" Type="CombinedSignInAndSignUp" ContentDefinitionReferenceId="api.signuporsignin">
           <ClaimsProviderSelections>
             <ClaimsProviderSelection TargetClaimsExchangeId="ForgotPasswordExchange" />
             <ClaimsProviderSelection ValidationClaimsExchangeId="LocalAccountSigninEmailExchange" />
             <ClaimsProviderSelection TargetClaimsExchangeId="WORKExchange" />
+            <ClaimsProviderSelection TargetClaimsExchangeId="GoogleExchange" xmlns="http://schemas.microsoft.com/online/cpim/schemas/2013/06" />
           </ClaimsProviderSelections>
           <ClaimsExchanges>
             <ClaimsExchange Id="LocalAccountSigninEmailExchange" TechnicalProfileReferenceId="SelfAsserted-LocalAccountSignin-Email" />
@@ -103,6 +103,7 @@ UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights"
           <ClaimsExchanges>
             <ClaimsExchange Id="ForgotPasswordExchange" TechnicalProfileReferenceId="ForgotPassword" />
             <ClaimsExchange Id="WORKExchange" TechnicalProfileReferenceId="WORK-OIDC" />
+            <ClaimsExchange Id="GoogleExchange" TechnicalProfileReferenceId="Google-OAUTH2" xmlns="http://schemas.microsoft.com/online/cpim/schemas/2013/06" />
           </ClaimsExchanges>
         </OrchestrationStep>
         <OrchestrationStep Order="4" Type="InvokeSubJourney">
@@ -218,9 +219,9 @@ UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights"
         <OutputClaim ClaimTypeReferenceId="signInName" PartnerClaimType="email" />
         <OutputClaim ClaimTypeReferenceId="objectId" PartnerClaimType="sub" />
         <OutputClaim ClaimTypeReferenceId="identityProvider" />
-        <OutputClaim ClaimTypeReferenceId="tenantName" />   
-        <OutputClaim ClaimTypeReferenceId="idp" DefaultValue="unknown" />     
-        <OutputClaim ClaimTypeReferenceId="domain_hint" DefaultValue="unknown"/>            
+        <OutputClaim ClaimTypeReferenceId="tenantName" />
+        <OutputClaim ClaimTypeReferenceId="idp" DefaultValue="unknown" />
+        <OutputClaim ClaimTypeReferenceId="domain_hint" DefaultValue="unknown" />
         <OutputClaim ClaimTypeReferenceId="tenantId" AlwaysUseDefaultValue="true" DefaultValue="{Policy:TenantObjectId}" />
       </OutputClaims>
       <SubjectNamingInfo ClaimType="sub" />
