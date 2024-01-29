@@ -84,8 +84,8 @@
             <!--Item Key="ValidTokenIssuerPrefixes">https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000,https://login.microsoftonline.com/11111111-1111-1111-1111-111111111111</Item-->
             <!-- The commented key below specifies that users from any tenant can sign-in. Uncomment if you would like anyone with an Azure AD account to be able to sign in. -->
             <Item Key="ValidTokenIssuerPrefixes">https://login.microsoftonline.com/</Item>
-            <!-- <Item Key="ClaimTypeOnWhichToEnable">idp</Item>
-            <Item Key="ClaimValueOnWhichToEnable">entraid</Item>             -->
+            <Item Key="ClaimTypeOnWhichToEnable">idp</Item>
+            <Item Key="ClaimValueOnWhichToEnable">entraid</Item>            
           </Metadata>
           <CryptographicKeys>
             <Key Id="client_secret" StorageReferenceId="B2C_1A_WORKAppSecret" />
@@ -111,7 +111,7 @@
             <OutputClaimsTransformation ReferenceId="CreateSubjectClaimFromAlternativeSecurityId" />
           </OutputClaimsTransformations>
           <UseTechnicalProfileForSessionManagement ReferenceId="SM-SocialLogin" />
-          <!-- <EnabledForUserJourneys>OnClaimsExistence</EnabledForUserJourneys> -->
+          <EnabledForUserJourneys>OnClaimsExistence</EnabledForUserJourneys>
         </TechnicalProfile>
       </TechnicalProfiles>
     </ClaimsProvider>
@@ -130,7 +130,7 @@
           </Metadata>
           <InputClaims>
             <InputClaim ClaimTypeReferenceId="objectId" PartnerClaimType="userObjectId" />
-            <InputClaim ClaimTypeReferenceId="domain_hint" PartnerClaimType="groupName" DefaultValue="{OAUTH-KV:domain}" AlwaysUseDefaultValue="true" />            
+            <InputClaim ClaimTypeReferenceId="domain_hint" PartnerClaimType="groupName" />            
           </InputClaims>
           <OutputClaims>
             <OutputClaim ClaimTypeReferenceId="domain_hint" />            

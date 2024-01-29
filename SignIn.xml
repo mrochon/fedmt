@@ -19,7 +19,8 @@ UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights"
     <Localization Enabled="true">
       <LocalizedResources Id="api.signuporsignin.en">
         <LocalizedStrings>
-          <LocalizedString ElementType="UxElement" StringId="social_intro">Sign in with your social account 8</LocalizedString>   
+          <LocalizedString ElementType="UxElement" StringId="social_intro">Sign in with your social account 3</LocalizedString>   
+          <LocalizedString ElementType="UxElement" StringId="forgotpassword_link">Forgot your password 3?</LocalizedString>          
           </LocalizedStrings>
           </LocalizedResources>
           </Localization> 
@@ -35,14 +36,10 @@ UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights"
             </Item>
             <Item Key="setting.forgotPasswordLinkOverride">ForgotPasswordExchange</Item>
           </Metadata>
-          <!-- <InputClaims>
-            <InputClaim ClaimTypeReferenceId="idp" DefaultValue="{OAUTH-KV:idp}" AlwaysUseDefaultValue="true"/>
-            <InputClaim ClaimTypeReferenceId="domain_hint" DefaultValue="{OAUTH-KV:domain}" AlwaysUseDefaultValue="true" />            
-          </InputClaims> -->
-          <OutputClaims>
-            <OutputClaim ClaimTypeReferenceId="idp" DefaultValue="{OAUTH-KV:idp}" AlwaysUseDefaultValue="true"/>
-            <OutputClaim ClaimTypeReferenceId="domain_hint" DefaultValue="{OAUTH-KV:domain}" AlwaysUseDefaultValue="true" />            
-          </OutputClaims>          
+          <InputClaims>
+            <InputClaim ClaimTypeReferenceId="idp" />
+            <InputClaim ClaimTypeReferenceId="domain_hint" />            
+          </InputClaims>          
           <ValidationTechnicalProfiles>
             <ValidationTechnicalProfile ReferenceId="login-NonInteractive" />
             <ValidationTechnicalProfile ReferenceId="REST-VerifyMembership" />            
@@ -59,7 +56,7 @@ UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights"
         <TechnicalProfile Id="LocalAccountDiscoveryUsingEmailAddress">
           <ValidationTechnicalProfiles>
             <ValidationTechnicalProfile ReferenceId="AAD-UserReadUsingEmailAddress" />
-            <ValidationTechnicalProfile ReferenceId="REST-VerifyMembership" />                     
+            <!-- <ValidationTechnicalProfile ReferenceId="REST-VerifyMembership" />                      -->
           </ValidationTechnicalProfiles>
         </TechnicalProfile>
         <TechnicalProfile Id="CopyHRDParams">
@@ -72,7 +69,7 @@ UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights"
             <OutputClaim ClaimTypeReferenceId="idp" DefaultValue="{OAUTH-KV:idp}" AlwaysUseDefaultValue="true" />
             <OutputClaim ClaimTypeReferenceId="domain_hint" DefaultValue="{OAUTH-KV:domain}" AlwaysUseDefaultValue="true" />
           </OutputClaims>
-           <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+          <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
       </TechnicalProfile>
       </TechnicalProfiles>
     </ClaimsProvider>
@@ -80,12 +77,12 @@ UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights"
   <UserJourneys>
     <UserJourney Id="SignIn">
       <OrchestrationSteps>
-        <!-- <OrchestrationStep Order="1" Type="ClaimsExchange">
+        <OrchestrationStep Order="1" Type="ClaimsExchange">
           <ClaimsExchanges>
             <ClaimsExchange Id="HRD" TechnicalProfileReferenceId="CopyHRDParams" />
           </ClaimsExchanges>
-        </OrchestrationStep>         -->
-        <OrchestrationStep Order="1" Type="CombinedSignInAndSignUp" ContentDefinitionReferenceId="api.signuporsignin">
+        </OrchestrationStep>        
+        <OrchestrationStep Order="2" Type="CombinedSignInAndSignUp" ContentDefinitionReferenceId="api.signuporsignin">
           <ClaimsProviderSelections>
             <ClaimsProviderSelection TargetClaimsExchangeId="ForgotPasswordExchange" />
             <ClaimsProviderSelection ValidationClaimsExchangeId="LocalAccountSigninEmailExchange" />
@@ -96,7 +93,7 @@ UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights"
           </ClaimsExchanges>
         </OrchestrationStep>
         <!-- Check if the user has selected to sign in using one of the social providers -->
-        <OrchestrationStep Order="2" Type="ClaimsExchange">
+        <OrchestrationStep Order="3" Type="ClaimsExchange">
           <Preconditions>
             <Precondition Type="ClaimsExist" ExecuteActionsIf="true">
               <Value>objectId</Value>
@@ -108,7 +105,7 @@ UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights"
             <ClaimsExchange Id="WORKExchange" TechnicalProfileReferenceId="WORK-OIDC" />
           </ClaimsExchanges>
         </OrchestrationStep>
-        <OrchestrationStep Order="3" Type="InvokeSubJourney">
+        <OrchestrationStep Order="4" Type="InvokeSubJourney">
           <Preconditions>
             <Precondition Type="ClaimsExist" ExecuteActionsIf="false">
               <Value>isForgotPassword</Value>
@@ -120,7 +117,7 @@ UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights"
           </JourneyList>
         </OrchestrationStep>
         <!-- For social IDP authentication, attempt to find the user account in the directory. -->
-        <OrchestrationStep Order="4" Type="ClaimsExchange">
+        <OrchestrationStep Order="5" Type="ClaimsExchange">
           <Preconditions>
             <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
               <Value>authenticationSource</Value>
@@ -137,7 +134,7 @@ UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights"
           This can only happen when authentication happened using a social IDP. If local account was created
         or authentication done
           using ESTS in step 2, then an user account must exist in the directory by this time. -->
-        <OrchestrationStep Order="5" Type="ClaimsExchange">
+        <OrchestrationStep Order="6" Type="ClaimsExchange">
           <Preconditions>
             <Precondition Type="ClaimsExist" ExecuteActionsIf="true">
               <Value>objectId</Value>
@@ -151,7 +148,7 @@ UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights"
         <!-- This step reads any user attributes that we may not have received when authenticating
         using ESTS so they can be sent 
           in the token. -->
-        <OrchestrationStep Order="6" Type="ClaimsExchange">
+        <OrchestrationStep Order="7" Type="ClaimsExchange">
           <Preconditions>
             <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
               <Value>authenticationSource</Value>
@@ -168,7 +165,7 @@ UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights"
              from the user. So, in that case, create the user in the directory if one does not already exist 
              (verified using objectId which would be set from the last step if account was created in the
         directory. -->
-        <OrchestrationStep Order="7" Type="ClaimsExchange">
+        <OrchestrationStep Order="8" Type="ClaimsExchange">
           <Preconditions>
             <Precondition Type="ClaimsExist" ExecuteActionsIf="true">
               <Value>objectId</Value>
@@ -179,7 +176,7 @@ UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights"
             <ClaimsExchange Id="AADUserWrite" TechnicalProfileReferenceId="AAD-UserWriteUsingAlternativeSecurityId" />
           </ClaimsExchanges>
         </OrchestrationStep>
-        <OrchestrationStep Order="8" Type="SendClaims" CpimIssuerTechnicalProfileReferenceId="JwtIssuer" />
+        <OrchestrationStep Order="9" Type="SendClaims" CpimIssuerTechnicalProfileReferenceId="JwtIssuer" />
       </OrchestrationSteps>
       <ClientDefinition ReferenceId="DefaultWeb" />
     </UserJourney>
