@@ -1,0 +1,9 @@
+{
+  "Prefix": "MT_",
+  "WORK": {
+    "clientId": "8f08158a-36ff-48fb-a692-2f8cdd67f077"
+  },
+  "REST": {
+    "VerifyMembership": "https://mrb2cfunctions.azurewebsites.net/api/IsMemberOfGroup?code=7IDwkGnIkQBlU1trvbBM4W6QqXnr4zoTOG-R4QH5cJG_AzFu8sHTQg=="
+  }
+}
